@@ -3,8 +3,26 @@ from pathlib import Path
 from .file_handler import get_file_category, rename_file
 
 
+def is_cli_path(dir_path):
+    path = Path(dir_path).resolve()
+    cli_path = [
+        Path(__file__).resolve().parents[2],
+        Path(__file__).resolve().parents[1],
+        Path(__file__).resolve().parents[0]
+    ]
+    return path in cli_path
+
+
 def sort_directory(dir_path):
     path = Path(dir_path).resolve()
+
+    if is_cli_path(path):
+        print(
+            f"Sorting is forbidden.",
+            f"The path contains system files of the Pyfim-CLI: {path} ",
+            sep="\n"
+        )
+        return
 
     try:
         files = [f for f in path.iterdir() if f.is_file()]
