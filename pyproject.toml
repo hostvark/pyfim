@@ -1,7 +1,7 @@
 [project]
-name = "python-file-information-mover"
+name = "pyfim"
 version = "0.1.0"
-description = ""
+description = "python file information mover"
 authors = [
     {name = "Vark"}
 ]
