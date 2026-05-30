@@ -18,6 +18,7 @@ def is_cli_path(dir_path):
 
 def sort_directory(dir_path):
     path = Path(dir_path).resolve()
+    logger.info("Starting Pyfim-CLI")
 
     if not path.exists():
         logger.error("The path does not exist: %s", path)

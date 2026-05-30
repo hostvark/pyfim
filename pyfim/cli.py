@@ -8,7 +8,7 @@ root_logger = logging.getLogger()
 root_logger.setLevel(logging.DEBUG)
 
 formatter = logging.Formatter(
-    '%(asctime)s [%(filename)s] %(levelname)s: %(message)s',
+    '%(asctime)s | %(filename)-15s | %(levelname)-5s | MESSAGE: %(message)s',
     datefmt='%H:%M:%S'
 )
 
