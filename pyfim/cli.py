@@ -4,28 +4,27 @@ from pathlib import Path
 from .handlers.dir_handler import sort_directory
 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(filename)s] %(levelname)s: %(message)s',
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter(
+    '%(asctime)s [%(filename)s] %(levelname)s: %(message)s',
     datefmt='%H:%M:%S'
 )
 
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+console_handler.setFormatter(formatter)
+root_logger.addHandler(console_handler)
 
-# logger = logging.getLogger(__name__)
+logs_dir = Path(__file__).resolve().parents[1] / "logs"
+logs_dir.mkdir(exist_ok=True)
 
-'''
-def check_dir_path(dir_path):
-    path = Path(dir_path).resolve()
-    if not path.exists():
-        raise argparse.ArgumentTypeError(
-            f"\nThe path does not exist: {path}"
-        )
-    if not path.is_dir():
-        raise argparse.ArgumentTypeError(
-            f"\nFile '{path.name}' is not a directory: {path}"
-        )
-    return path
-'''
+file_handler = logging.FileHandler("logs/service.log")
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(formatter)
+root_logger.addHandler(file_handler)
+
 
 def main():
     parser = argparse.ArgumentParser(
