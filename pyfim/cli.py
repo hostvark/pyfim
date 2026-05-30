@@ -40,7 +40,7 @@ def main():
         default=Path.cwd(),
         help=(
             "Path to the folder to be sorted "
-            "(the current folder by default)"
+            "(current folder by default)"
         )
     )
     args = parser.parse_args()
