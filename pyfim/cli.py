@@ -11,9 +11,9 @@ logging.basicConfig(
 )
 
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
-
+'''
 def check_dir_path(dir_path):
     path = Path(dir_path).resolve()
     if not path.exists():
@@ -25,7 +25,7 @@ def check_dir_path(dir_path):
             f"\nFile '{path.name}' is not a directory: {path}"
         )
     return path
-
+'''
 
 def main():
     parser = argparse.ArgumentParser(
@@ -36,7 +36,6 @@ def main():
     parser.add_argument(
         "directory",
         nargs="?",
-        type=check_dir_path,
         default=Path.cwd(),
         help=(
             "Path to the folder to be sorted "

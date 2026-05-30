@@ -8,17 +8,28 @@ logger = logging.getLogger(__name__)
 
 
 def is_cli_path(dir_path):
-    path = Path(dir_path).resolve()
     cli_path = [
         Path(__file__).resolve().parents[2],
         Path(__file__).resolve().parents[1],
         Path(__file__).resolve().parents[0]
     ]
-    return path in cli_path
+    return dir_path in cli_path
 
 
 def sort_directory(dir_path):
     path = Path(dir_path).resolve()
+
+    if not path.exists():
+        logger.error("The path does not exist: %s", path)
+        return
+
+    if not path.is_dir():
+        logger.error(
+            "File '%s' is not a directory: %s",
+            path.name,
+            path
+        )
+        return
 
     if is_cli_path(path):
         logger.error(
