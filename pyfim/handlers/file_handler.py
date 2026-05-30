@@ -1,8 +1,10 @@
 import yaml
+import logging
 from pathlib import Path
 from .datetime_handler import get_file_rename_time
 
 
+logger = logging.getLogger(__name__)
 config_path = Path(__file__).resolve().parents[1] / "config.yaml"
 
 
@@ -34,6 +36,12 @@ def rename_file(path):
         items = [item.name for item in parent.iterdir()]
         if new_name not in items:
             file.rename(parent / new_name)
+            logger.info(
+                "File %s has been renamed from '%s' to '%s'",
+                file,
+                file.name,
+                new_name
+            )
         else:
             rename_time = get_file_rename_time(delta=1)
             inner(file)

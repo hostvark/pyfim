@@ -1,6 +1,17 @@
 import argparse
+import logging
 from pathlib import Path
 from .handlers.dir_handler import sort_directory
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(filename)s] %(levelname)s: %(message)s',
+    datefmt='%H:%M:%S'
+)
+
+
+logger = logging.getLogger(__name__)
 
 
 def check_dir_path(dir_path):
@@ -14,6 +25,7 @@ def check_dir_path(dir_path):
             f"\nFile '{path.name}' is not a directory: {path}"
         )
     return path
+
 
 def main():
     parser = argparse.ArgumentParser(

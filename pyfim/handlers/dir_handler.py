@@ -1,6 +1,10 @@
 import shutil
+import logging
 from pathlib import Path
 from .file_handler import get_file_category, rename_file
+
+
+logger = logging.getLogger(__name__)
 
 
 def is_cli_path(dir_path):
@@ -17,30 +21,32 @@ def sort_directory(dir_path):
     path = Path(dir_path).resolve()
 
     if is_cli_path(path):
-        print(
-            f"Sorting is forbidden.",
-            f"The path contains system files of the Pyfim-CLI: {path} ",
-            sep="\n"
+        logger.error(
+            "Sorting is forbidden. "
+            "The path contains system files of the Pyfim-CLI: %s",
+            path
         )
         return
 
     try:
         files = [f for f in path.iterdir() if f.is_file()]
     except PermissionError:
-        print(f"Directory cannot be read: {path}")
+        logger.error("Directory cannot be read: %s", path)
         return
 
     if not files:
-        print("No files to sort")
+        logger.info("No files to sort")
         return
 
     for file in files:
         try:
             category = get_file_category(file)
             new_dir = path / category
+            if not new_dir.exists():
+                logger.info("New directory has been created: %s",new_dir)
             new_dir.mkdir(exist_ok=True)
         except PermissionError:
-            print(f"No rights to create a folder: {new_dir}")
+            logger.error("No rights to create a folder: %s", new_dir)
             return
 
         sorted_file = new_dir / file.name
@@ -48,7 +54,11 @@ def sort_directory(dir_path):
             try:
                 rename_file(sorted_file)
             except PermissionError:
-                print(f"No permissions to move or rename: {sorted_file}")
+                logger.error(
+                    "No permissions to move or rename: ",
+                    sorted_file
+                )
                 return
 
         shutil.move(file, new_dir)
+        logger.info("File %s has been moved to %s", file, new_dir)
